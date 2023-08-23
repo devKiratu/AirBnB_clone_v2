@@ -47,7 +47,8 @@ class DBStorage:
             cls_objects = {
                     'State': State,
                     'City': City,
-                    'User': User
+                    'User': User,
+                    'Place': Place
                     }
         else:
             print(f"=== cls passed to all {cls} ===")
