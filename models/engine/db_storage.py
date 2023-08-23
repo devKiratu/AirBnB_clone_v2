@@ -4,12 +4,12 @@
 from sqlalchemy import create_engine
 from os import getenv
 from models.base_model import Base
+from models.user import User
 from models.city import City
 from models.state import State
 from models.place import Place
 from models.amenity import Amenity
 from models.review import Review
-from models.user import User
 from sqlalchemy.orm import sessionmaker, scoped_session
 
 
@@ -46,15 +46,20 @@ class DBStorage:
         if cls is None:
             cls_objects = {
                     'State': State,
-                    'City': City
+                    'City': City,
+                    'User': User,
+                    'Place': Place,
+                    'Review': Review
                     }
         else:
             print(f"=== cls passed to all {cls} ===")
             cls_objects = [cls]
         for key in cls_objects.keys():
             rows = self.__session.query(cls_objects[key]).all()
+            # print(f" ===== rows: {rows} ======")
             for row in rows:
-                key = f"{key}.{cls_objects[key]}"
+                # print(f" ======= {key.split('.')[0]}: {key} ====== ")
+                key = f"{key.split('.')[0]}.{cls_objects[key.split('.')[0]]}"
                 objs[key] = row
         return objs
 

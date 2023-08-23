@@ -127,6 +127,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         new_instance = HBNBCommand.classes[cls_name]()
+        storage.save()
 
         params_dict = {}
 
@@ -151,6 +152,7 @@ class HBNBCommand(cmd.Cmd):
 
             setattr(new_instance, key, value)
         new_instance.save()
+        storage.save()
         print(new_instance.id)
 
     def help_crea(self):
