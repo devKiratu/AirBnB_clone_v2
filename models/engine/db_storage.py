@@ -46,15 +46,18 @@ class DBStorage:
         if cls is None:
             cls_objects = {
                     'State': State,
-                    'City': City
+                    'City': City,
+                    'User': User
                     }
         else:
             print(f"=== cls passed to all {cls} ===")
             cls_objects = [cls]
         for key in cls_objects.keys():
             rows = self.__session.query(cls_objects[key]).all()
+            # print(f" ===== rows: {rows} ======")
             for row in rows:
-                key = f"{key}.{cls_objects[key]}"
+                # print(f" ======= {key.split('.')[0]}: {key} ====== ")
+                key = f"{key.split('.')[0]}.{cls_objects[key.split('.')[0]]}"
                 objs[key] = row
         return objs
 
