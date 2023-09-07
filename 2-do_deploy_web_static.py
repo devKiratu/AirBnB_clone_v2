@@ -25,27 +25,38 @@ def do_deploy(archive_path):
             return False
         # Uncompress .tgz to  /data/web_static/releases/<file_name>
         files_path = "web_static_{}".format(archive_path[20:-4])
-        run("sudo mkdir -p /data/web_static/releases/{}".format(files_path))
-        run("sudo tar -xzf /tmp/{}.tgz -C /data/web_static/releases/{}"
-            .format(files_path, files_path))
+        c = "sudo mkdir -p /data/web_static/releases/{}".format(files_path)
+        if run(c).failed:
+            return False
+        c = "sudo tar -xzf /tmp/{}.tgz -C /data/web_static/releases/{}"\
+            .format(files_path, files_path)
+        if run(c).failed:
+            return False
         # Delete the archive from the web server
-        run("sudo rm -f /tmp/{}.tgz".format(files_path))
+        if run("sudo rm -f /tmp/{}.tgz".format(files_path)).failed:
+            return False
 
         # Delete the symbolic link /data/web_static/current from web server
-        run("sudo rm /data/web_static/current")
+        if run("sudo rm -rf /data/web_static/current").failed:
+            return False
 
         # Create new symbolic link /data/web_static/current to uploaded files
-        run("sudo ln -s -f /data/web_static/releases/{}\
- /data/web_static/current".format(files_path))
+        c = "sudo ln -s -f /data/web_static/releases/{}\
+ /data/web_static/current".format(files_path)
+        if run(c).failed:
+            return False
 
         # move unzipped files to base files_path
-        run("sudo mv /data/web_static/releases/{}/web_static/*\
- /data/web_static/releases/{}".format(files_path, files_path))
+        c = "sudo mv /data/web_static/releases/{}/web_static/*\
+ /data/web_static/releases/{}".format(files_path, files_path)
+        if run(c).failed:
+            return False
 
         # delete empty folder
-        run("sudo rm -rf /data/web_static/releases/{}/web_static"
-            .format(files_path))
-
+        c = "sudo rm -rf /data/web_static/releases/{}/web_static"\
+            .format(files_path)
+        if run(c).failed:
+            return False
         return True
     except Exception:
         return False
