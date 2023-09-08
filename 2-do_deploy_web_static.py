@@ -25,10 +25,10 @@ def do_deploy(archive_path):
             return False
         # Uncompress .tgz to  /data/web_static/releases/<file_name>
         files_path = "web_static_{}".format(archive_path[-18:-4])
-        c = "sudo mkdir -p /data/web_static/releases/{}".format(files_path)
+        c = "sudo mkdir -p /data/web_static/releases/{}/".format(files_path)
         if run(c).failed:
             return False
-        c = "sudo tar -xzf /tmp/{}.tgz -C /data/web_static/releases/{}"\
+        c = "sudo tar -xzf /tmp/{}.tgz -C /data/web_static/releases/{}/"\
             .format(files_path, files_path)
         if run(c).failed:
             return False
@@ -38,7 +38,7 @@ def do_deploy(archive_path):
 
         # move unzipped files to base files_path
         c = "sudo mv /data/web_static/releases/{}/web_static/*\
- /data/web_static/releases/{}".format(files_path, files_path)
+ /data/web_static/releases/{}/".format(files_path, files_path)
         if run(c).failed:
             return False
 
@@ -53,7 +53,7 @@ def do_deploy(archive_path):
             return False
 
         # Create new symbolic link /data/web_static/current to uploaded files
-        c = "sudo ln -s /data/web_static/releases/{}\
+        c = "sudo ln -s /data/web_static/releases/{}/\
  /data/web_static/current".format(files_path)
         if run(c).failed:
             return False
