@@ -53,7 +53,7 @@ def do_deploy(archive_path):
             return False
 
         # Create new symbolic link /data/web_static/current to uploaded files
-        c = "sudo ln -s -f /data/web_static/releases/{}\
+        c = "sudo ln -s /data/web_static/releases/{}\
  /data/web_static/current".format(files_path)
         if run(c).failed:
             return False
