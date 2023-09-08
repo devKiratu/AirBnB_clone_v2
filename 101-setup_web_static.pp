@@ -14,8 +14,8 @@ package { 'nginx':
 
 # create required directories
 exec { 'create_directories':
-  command => '/usr/bin/mkdir -p /data/ /data/web_static/ /data/web_static/releases/' +
-  ' /data/web_static/shared/ /data/web_static/releases/test/'
+  command => "/usr/bin/mkdir -p /data/ /data/web_static/ /data/web_static/releases/\
+  /data/web_static/shared/ /data/web_static/releases/test/"
 }
 
 # create test file
@@ -46,7 +46,7 @@ exec { 'change_data_ownership':
 }
 
 # update nginx configuration to server /web_static/current at /hbnb_static
-$config="\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current;\n\t}\n"
+$config="\\\n\tlocation /hbnb_static {\\n\t\talias /data/web_static/current;\\n\t}\\n"
 exec { 'serve_hbnb_static':
   command => "/usr/bin/sed -i \"/server_name _;/a\\${config}\" /etc/nginx/sites-enabled/default",
   require => Package['nginx']
