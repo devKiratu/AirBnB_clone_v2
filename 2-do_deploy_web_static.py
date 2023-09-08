@@ -36,16 +36,6 @@ def do_deploy(archive_path):
         if run("sudo rm -f /tmp/{}.tgz".format(files_path)).failed:
             return False
 
-        # Delete the symbolic link /data/web_static/current from web server
-        if run("sudo rm -rf /data/web_static/current").failed:
-            return False
-
-        # Create new symbolic link /data/web_static/current to uploaded files
-        c = "sudo ln -s -f /data/web_static/releases/{}\
- /data/web_static/current".format(files_path)
-        if run(c).failed:
-            return False
-
         # move unzipped files to base files_path
         c = "sudo mv /data/web_static/releases/{}/web_static/*\
  /data/web_static/releases/{}".format(files_path, files_path)
@@ -57,6 +47,17 @@ def do_deploy(archive_path):
             .format(files_path)
         if run(c).failed:
             return False
+
+        # Delete the symbolic link /data/web_static/current from web server
+        if run("sudo rm -rf /data/web_static/current").failed:
+            return False
+
+        # Create new symbolic link /data/web_static/current to uploaded files
+        c = "sudo ln -s -f /data/web_static/releases/{}\
+ /data/web_static/current".format(files_path)
+        if run(c).failed:
+            return False
+
         return True
     except Exception:
         return False
