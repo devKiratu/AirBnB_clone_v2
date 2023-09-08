@@ -24,7 +24,7 @@ def do_deploy(archive_path):
         if upload.failed:
             return False
         # Uncompress .tgz to  /data/web_static/releases/<file_name>
-        files_path = "web_static_{}".format(archive_path[20:-4])
+        files_path = "web_static_{}".format(archive_path[-18:-4])
         c = "sudo mkdir -p /data/web_static/releases/{}".format(files_path)
         if run(c).failed:
             return False
