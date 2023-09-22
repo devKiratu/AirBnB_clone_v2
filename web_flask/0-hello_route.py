@@ -14,5 +14,6 @@ def hello_HBNB():
     """displays 'hello HBNB!' on route /"""
     return "Hello HBNB!\n"
 
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
