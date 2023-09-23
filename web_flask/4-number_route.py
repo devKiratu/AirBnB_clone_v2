@@ -30,7 +30,7 @@ def hello_c(text):
 
 @app.route("/python", strict_slashes=False)
 @app.route("/python/<text>", strict_slashes=False)
-def hello_python(text="cool"):
+def hello_python(text="is cool"):
     """prints a message about python contained in route parameter <text>"""
     msg = "Python {}".format(text.replace('_', ' '))
     return msg
