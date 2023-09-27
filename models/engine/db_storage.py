@@ -42,25 +42,27 @@ class DBStorage:
         """query on the current database session (self.__session) all
         objects depending of the class name (argument cls)
         """
+        if self.__session is None:
+            self.reload()
         objs = {}
-        if cls is None:
-            cls_objects = {
-                    'State': State,
-                    'City': City,
-                    'User': User,
-                    'Place': Place,
-                    'Review': Review
-                    }
+        cls_objects = {
+                'State': State,
+                'City': City,
+                'User': User,
+                'Place': Place,
+                'Review': Review,
+                }
+        if cls is not None:
+            rows = self.__session.query(cls)
+            for obj in rows:
+                key = "{}.{}".format(obj.__class__.__name__, obj.id)
+                objs[key] = obj
         else:
-            print(f"=== cls passed to all {cls} ===")
-            cls_objects = [cls]
-        for key in cls_objects.keys():
-            rows = self.__session.query(cls_objects[key]).all()
-            # print(f" ===== rows: {rows} ======")
-            for row in rows:
-                # print(f" ======= {key.split('.')[0]}: {key} ====== ")
-                key = f"{key.split('.')[0]}.{cls_objects[key.split('.')[0]]}"
-                objs[key] = row
+            for cls_obj in cls_objects.values():
+                rows = self.__session.query(cls_obj)
+                for obj in rows:
+                    key = "{}.{}".format(obj.__class__.__name__, obj.id)
+                    objs[key] = obj
         return objs
 
     def new(self, obj):
@@ -83,3 +85,7 @@ class DBStorage:
                                        expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
+
+    def close(self):
+        """closes and disposes the session"""
+        self.__session.close()

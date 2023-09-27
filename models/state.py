@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from models.base_model import BaseModel, Base
+from models.city import City
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from os import getenv
@@ -8,21 +9,25 @@ from os import getenv
 
 class State(BaseModel, Base):
     """Class definition for State, and Mapper class for table states """
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
+        __tablename__ = "states"
+        name = Column(String(128), nullable=False)
+        cities = relationship("City", backref="state", cascade="all, delete")
+    else:
+        name = ""
 
-    __tablename__ = "states"
-    name = Column(String(128), nullable=False)
-    cities = relationship("City", backref="state", cascade="all, delete")
+    def __init__(self, *args, **kwargs):
+        """initialize State class"""
+        super().__init__(*args, **kwargs)
 
-    @property
-    def cities(self):
-        """getter attribute for use with FileStorage"""
-        if getenv('HBNB_TYPE_STORAGE') != 'db':
+    if getenv('HBNB_TYPE_STORAGE') != 'db':
+        @property
+        def cities(self):
+            """getter attribute for use with FileStorage"""
             from models import storage
-            all_objs = storage.all()
-            city_objs = []
-            for obj in all_objs.items():
-                k, v = obj
-                if 'City' in k and self.id in v:
-                    city_objs.append(obj)
-
-            return city_objs
+            all_cities = storage.all(City).values()
+            required_cities = []
+            for city in all_cities:
+                if city.state_id == self.id:
+                    required_cities.append(city)
+            return required_cities
