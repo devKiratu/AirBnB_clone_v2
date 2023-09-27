@@ -24,10 +24,9 @@ def teardown(exception):
     """removes the current SQL Alchemy session
         Args:
             exception: holds information about any exception that occurs
-            during request processing
-    """
+            during request processing"""
     storage.close()
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=5000)
