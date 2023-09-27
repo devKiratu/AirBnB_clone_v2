@@ -24,7 +24,6 @@ def show_states():
     formatted_states = []
     for state in states.values():
         formatted_states.append({'id': state.id, 'name': state.name})
-    print(formatted_states)
     return render_template('7-states_list.html', states=formatted_states)
 
 
