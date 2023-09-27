@@ -27,7 +27,7 @@ class DBStorage:
         db = getenv('HBNB_MYSQL_DB')
         env = getenv('HBNB_ENV')
         self.__engine = create_engine(
-                'mysql+mysqldb://{}:{}@{}/{}?charset=utf8mb4'
+                'mysql+mysqldb://{}:{}@{}/{}'
                 .format(user, pwd, host, db), pool_pre_ping=True)
         if env == "test":
             Base.metadata.drop_all(self.__engine)
