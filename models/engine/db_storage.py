@@ -51,6 +51,7 @@ class DBStorage:
                 'User': User,
                 'Place': Place,
                 'Review': Review,
+                'Amenity': Amenity
                 }
         if cls is not None:
             rows = self.__session.query(cls)
