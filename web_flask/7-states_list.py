@@ -1,6 +1,5 @@
 #!/usr/bin/python3
-"""
-This script starts a Flask web app listening on 0.0.0.0:5000 that displays
+"""This script starts a Flask web app listening on 0.0.0.0:5000 that displays
 a html page with a lists of states in route /states_list
 """
 from flask import Flask, render_template
