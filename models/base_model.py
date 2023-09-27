@@ -67,10 +67,4 @@ class BaseModel:
         """deletes this object from storage"""
         # TODO: revisit this method
         from models import storage
-        objs = storage.all()
-        for key in objs.keys():
-            if self.id in key:
-                print(f"found {key}")
-                del objs[key]
-                storage.save()
-                return
+        storage.delete(self);
